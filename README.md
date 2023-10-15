@@ -1,32 +1,35 @@
 # simple-chatroom
 
-FIXME: description
+A chatroom to allow interactions.
 
-## Installation
+## Design Overview:
+Redis:
+   - Used to store messages and users.
+   - Structure: 
+     - users: `<username>`: Hash to store user's info like IP address and tripcode hash.
+     - `messages`: List to store messages.
+     - message: `<id>`: Hash to store individual message details
+Reitit:
+     - Handle routing for our application.
+HTMX:
+     - Client-side library to allow parts of the web page to be updated via AJAX, combined with websockets for real-time updates.
 
-Download from http://example.com/FIXME.
+## Backend Components
+### User management(login/logout)
+- User submits username and optional tripcode for login.
+- Backend hashes the tripcode if provided and stores it.
+- IP address is also stored with the user's data in the session.
+- Session is cleared during log out
+### Message Management (add/edit/delete)
+- User submits a message.
+- Message, along with username and tripcode (or IP if no tripcode), is stored in Redis.
+- When editing, backend checks tripcode(or IP) before allowing the action
+- When deleting, backend checks tripcode(or IP) before allowing the action
+### WebSocket Management
+- This will handle real-time updates, messages are also sent over a WebSocket connection. (http-kit)
 
-## Usage
 
-FIXME: explanation
 
-    $ java -jar simple-chatroom-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
 
 ## License
 
